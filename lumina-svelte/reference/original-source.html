@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Skin • Temiz Bakım</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .logo-font { font-family: 'Playfair Display', serif; }
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat;
+        }
+        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -10px rgb(0 0 0 / 0.1); }
+        .modal { animation: modalPop 0.3s ease forwards; }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        .glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); }
+        .nav-link { position: relative; padding-bottom: 2px; }
+        .nav-link:after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background: #059669; transition: width 0.3s; }
+        .nav-link:hover:after { width: 100%; }
+        
+        .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-neutral-50 text-neutral-900 flex flex-col min-h-screen">
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-neutral-100">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-x-3">
+            <div class="w-9 h-9 bg-emerald-800 rounded-2xl flex items-center justify-center text-white text-3xl font-bold logo-font">L</div>
+            <span onclick="navigate('home')" class="logo-font text-3xl tracking-tight font-semibold text-emerald-900 cursor-pointer">lumina</span>
+        </div>
+        <div class="hidden md:flex items-center gap-x-10 text-sm font-semibold tracking-wide">
+            <a onclick="navigate('home')" class="nav-link cursor-pointer uppercase">Ana Sayfa</a>
+            <a onclick="navigate('shop')" class="nav-link cursor-pointer uppercase">Mağaza</a>
+            <a onclick="navigate('about')" class="nav-link cursor-pointer uppercase">Hakkımızda</a>
+        </div>
+        <div class="flex items-center gap-x-6">
+            <button onclick="toggleAuthModal()" class="hover:text-emerald-700 transition flex items-center gap-x-2">
+                <i class="fa-solid fa-circle-user text-2xl"></i>
+                <span id="userNameDisplay" class="hidden md:inline text-xs font-bold uppercase tracking-widest">Giriş Yap</span>
+            </button>
+            <button onclick="toggleCart()" class="relative flex items-center gap-x-2 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-bag-shopping text-2xl"></i>
+                <span id="cartCount" class="absolute -top-1 -right-1 bg-emerald-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            </button>
+            <button onclick="toggleMobileMenu()" class="md:hidden text-2xl"><i class="fa-solid fa-bars-staggered"></i></button>
+        </div>
+    </div>
+    <!-- Mobil Menü -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t py-8">
+        <div class="px-6 flex flex-col gap-y-8 text-center text-lg font-bold tracking-widest uppercase">
+            <a onclick="navigate('home')" class="cursor-pointer">Ana Sayfa</a>
+            <a onclick="navigate('shop')" class="cursor-pointer">Mağaza</a>
+            <a onclick="navigate('about')" class="cursor-pointer">Hakkımızda</a>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT WRAPPER -->
+<main class="flex-1">
+    
+    <!-- === SAYFA: ANA SAYFA === -->
+    <div id="page-home" class="page-view">
+        <!-- Hero Section -->
+        <section class="hero-bg h-[95vh] flex items-center justify-center pt-16 relative">
+            <div class="max-w-4xl mx-auto px-6 text-center text-white pb-10">
+                <h1 class="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] mb-8 drop-shadow-lg">
+                    Cildin parlasın.<br><span class="text-emerald-300">Doğal olarak.</span>
+                </h1>
+                <p class="text-lg md:text-xl max-w-xl mx-auto mb-12 font-medium text-white/90 drop-shadow-md">
+                    Temiz içerikli, bilimsel olarak kanıtlanmış ritüeller.<br>Doğadan ilham alan gerçek güzellik.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="navigate('shop')" class="w-full sm:w-auto bg-white text-emerald-900 font-bold px-12 py-6 rounded-full text-lg hover:bg-emerald-50 transition shadow-2xl flex items-center justify-center gap-x-3">
+                        Koleksiyonu İncele <i class="fa-solid fa-arrow-right-long"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Öne Çıkan Ürünler Section -->
+        <div class="relative z-10 -mt-16 bg-neutral-50 rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] pt-12 md:pt-20 pb-24">
+            <section class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-y-4">
+                    <div class="text-center md:text-left">
+                        <span class="text-emerald-600 text-xs font-black tracking-[0.3em] uppercase">Sezonun Favorileri</span>
+                        <h2 class="text-4xl md:text-5xl font-semibold tracking-tighter mt-3 text-neutral-900">Öne Çıkan Ürünler</h2>
+                    </div>
+                    <button onclick="navigate('shop')" class="text-neutral-900 font-bold border-b-2 border-neutral-900 pb-1 hover:text-emerald-700 hover:border-emerald-700 transition">Tümünü Gör</button>
+                </div>
+                <div id="featuredGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+            </section>
+        </div>
+    </div>
+
+    <!-- === SAYFA: MAĞAZA === -->
+    <div id="page-shop" class="page-view hidden pt-32 pb-20 bg-neutral-50">
+        <section id="shop" class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-y-8 border-b border-neutral-200 pb-10">
+                <div>
+                    <span class="text-emerald-600 text-xs font-black tracking-[0.3em] uppercase">Mağaza</span>
+                    <h2 class="text-5xl font-semibold tracking-tighter mt-3">Tüm Ürünler</h2>
+                    <p class="text-neutral-500 mt-4 font-medium"><span id="productCountBadge" class="text-neutral-900 font-bold">0</span> çeşit ürün listeleniyor</p>
+                </div>
+                <div class="flex flex-wrap gap-4 w-full md:w-auto">
+                    <select id="categoryFilter" onchange="filterProducts()" class="flex-1 md:flex-none border border-neutral-200 bg-white rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 appearance-none cursor-pointer font-bold text-sm shadow-sm">
+                        <option value="">Kategori Seçin</option>
+                    </select>
+                    <div class="relative flex-1 md:w-80">
+                        <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-neutral-400"></i>
+                        <input id="searchInput" type="text" placeholder="Ürün ara..." onkeyup="filterProducts()" class="w-full border border-neutral-200 bg-white rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm shadow-sm">
+                    </div>
+                </div>
+            </div>
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+            <div id="noProductsMessage" class="hidden text-center py-20">
+                <i class="fa-solid fa-cloud-moon text-6xl text-neutral-300 mb-6"></i>
+                <h3 class="text-2xl font-bold text-neutral-800 tracking-tighter">Aradığınızı bulamadık</h3>
+                <p class="text-neutral-500 mt-2">Filtreleri değiştirerek tekrar deneyebilirsiniz.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- === SAYFA: HAKKIMIZDA === -->
+    <div id="page-about" class="page-view hidden pt-24 bg-white">
+        <section class="max-w-7xl mx-auto px-6 mb-24">
+            <div class="rounded-[3rem] overflow-hidden relative h-[45vh] min-h-[350px] mb-16 flex items-center justify-center shadow-sm bg-emerald-50">
+                <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f9?auto=format&fit=crop&q=80&w=2000" 
+                     class="absolute inset-0 w-full h-full object-cover" alt="Lumina Felsefesi">
+                <div class="absolute inset-0 bg-emerald-950/30"></div>
+                <div class="relative z-10 text-center text-white px-6">
+                    <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-4 drop-shadow-md">Felsefemiz</h1>
+                    <p class="text-lg md:text-xl max-w-xl mx-auto font-medium text-white/90 drop-shadow-md">Doğanın mucizelerini modern bilimle harmanlıyoruz.</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-20 items-center mb-24">
+                <div>
+                    <span class="text-emerald-600 text-xs font-black tracking-[0.3em] uppercase">Vizyonumuz</span>
+                    <h2 class="text-4xl font-bold tracking-tighter mt-4 mb-8 text-neutral-900 leading-tight">Güzellik, doğallıkta gizlidir.</h2>
+                    <p class="text-lg text-neutral-600 mb-6 leading-relaxed">
+                        2026 yılında kurulan Lumina Skin olarak, cildinize saygı duyan formüller geliştirmek için yola çıktık. Karmaşık kimyasallar yerine, doğanın sunduğu güçlü ve saf bileşenleri tercih ediyoruz. 
+                    </p>
+                    <p class="text-lg text-neutral-600 leading-relaxed">
+                        Şeffaf içerik, dürüst etiketleme ve sürdürülebilir üretim en temel prensiplerimizdir. Sizin için sadece en iyisini üretiyoruz.
+                    </p>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1590439471364-192aa70c0b53?auto=format&fit=crop&q=80&w=800" class="rounded-[2.5rem] w-full aspect-square object-cover shadow-2xl" alt="Doğal İçerik">
+                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-3xl shadow-xl hidden lg:block border border-neutral-100">
+                        <div class="text-3xl font-bold text-emerald-800 leading-none">30k+</div>
+                        <div class="text-xs font-bold text-neutral-400 uppercase tracking-widest mt-2">Mutlu Müşteri</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-neutral-50 py-24 border-t border-neutral-100">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold tracking-tighter mb-4 text-neutral-900">Değerlerimiz</h2>
+                    <p class="text-neutral-500 max-w-xl mx-auto font-medium">Taviz vermediğimiz standartlarımızla cildinize ve gezegenimize özen gösteriyoruz.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-12 rounded-[2.5rem] shadow-sm border border-neutral-100 hover:shadow-lg hover:-translate-y-2 transition duration-500">
+                        <div class="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl mb-8">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-neutral-900 tracking-tight">Temiz İçerik</h3>
+                        <p class="text-neutral-500 leading-relaxed text-sm">Zararlı kimyasalları kapının dışında bırakıyoruz. Sadece cildinizin tanıdığı saf bitkisel bileşenler.</p>
+                    </div>
+                    <div class="bg-white p-12 rounded-[2.5rem] shadow-sm border border-neutral-100 hover:shadow-lg hover:-translate-y-2 transition duration-500">
+                        <div class="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl mb-8">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-neutral-900 tracking-tight">Bilimsel Onay</h3>
+                        <p class="text-neutral-500 leading-relaxed text-sm">Geleneksel çözümleri dermatoloji ile buluşturuyoruz. Her ürünümüz klinik testlerden geçmektedir.</p>
+                    </div>
+                    <div class="bg-white p-12 rounded-[2.5rem] shadow-sm border border-neutral-100 hover:shadow-lg hover:-translate-y-2 transition duration-500">
+                        <div class="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl mb-8">
+                            <i class="fa-solid fa-earth-americas"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-neutral-900 tracking-tight">Ekolojik</h3>
+                        <p class="text-neutral-500 leading-relaxed text-sm">Güzelliğin bedeli doğa olmamalı. Geri dönüştürülebilir ambalajlarla karbon ayak izimizi azaltıyoruz.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- === SAYFA: ÖDEME (CHECKOUT) === -->
+    <div id="page-checkout" class="page-view hidden pt-32 pb-20 bg-neutral-50">
+        <section class="max-w-7xl mx-auto px-6">
+            <div class="mb-12">
+                <span class="text-emerald-600 text-xs font-black tracking-[0.3em] uppercase">Güvenli Alışveriş</span>
+                <h2 class="text-4xl md:text-5xl font-semibold tracking-tighter mt-3 text-neutral-900">Ödemeyi Tamamla</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+                <!-- Sol Taraf: Formlar -->
+                <div class="lg:col-span-7 space-y-10">
+                    <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-neutral-100">
+                        <h3 class="text-2xl font-bold mb-6 text-neutral-900 tracking-tighter">İletişim Bilgileri</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <input type="text" placeholder="Adınız" class="w-full border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition">
+                            <input type="text" placeholder="Soyadınız" class="w-full border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition">
+                            <input type="email" placeholder="E-posta Adresi" class="w-full md:col-span-2 border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition">
+                            <input type="tel" placeholder="Telefon Numarası" class="w-full md:col-span-2 border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition">
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-neutral-100">
+                        <h3 class="text-2xl font-bold mb-6 text-neutral-900 tracking-tighter">Teslimat Adresi</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <input type="text" placeholder="Şehir" class="w-full border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition">
+                            <input type="text" placeholder="İlçe" class="w-full border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition">
+                            <textarea placeholder="Açık Adres (Mahalle, Sokak, No, Daire)" rows="3" class="w-full md:col-span-2 border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-neutral-100">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-neutral-900 tracking-tighter">Ödeme Bilgileri</h3>
+                            <div class="flex gap-3 text-2xl text-neutral-300">
+                                <i class="fa-brands fa-cc-visa"></i>
+                                <i class="fa-brands fa-cc-mastercard"></i>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-50 text-emerald-800 text-[10px] sm:text-xs font-black uppercase tracking-widest p-4 rounded-2xl mb-6 flex items-start sm:items-center gap-3 border border-emerald-100">
+                            <i class="fa-solid fa-circle-info text-lg mt-0.5 sm:mt-0"></i> Bu alan tasarımsaldır, lütfen gerçek kart bilgilerinizi girmeyiniz.
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <input type="text" placeholder="Kart Üzerindeki İsim" class="w-full md:col-span-2 border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm transition">
+                            <input type="text" placeholder="Kart Numarası" maxlength="19" class="w-full md:col-span-2 border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm tracking-widest transition">
+                            <input type="text" placeholder="AA / YY" maxlength="5" class="w-full border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm text-center transition">
+                            <input type="text" placeholder="CVV" maxlength="3" class="w-full border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium text-sm text-center transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sağ Taraf: Sipariş Özeti -->
+                <div class="lg:col-span-5 relative">
+                    <div class="sticky top-32 bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-neutral-100">
+                        <h3 class="text-2xl font-bold tracking-tighter mb-8 text-neutral-900 border-b border-neutral-100 pb-6">Sipariş Özeti</h3>
+                        
+                        <div id="checkoutItems" class="space-y-6 mb-8 max-h-[40vh] overflow-y-auto pr-2">
+                            <!-- Items go here -->
+                        </div>
+
+                        <div class="space-y-4 border-t border-neutral-100 pt-6 font-medium text-sm text-neutral-500">
+                            <div class="flex justify-between items-center">
+                                <span>Ara Toplam</span>
+                                <span id="checkoutSubtotal" class="text-neutral-900 font-bold">0 ₺</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="flex items-center">Kargo Tutarı <span class="text-[9px] bg-emerald-50 text-emerald-700 font-bold tracking-widest uppercase px-2 py-1 rounded-full ml-3">150₺ Üzeri Ücretsiz</span></span>
+                                <span id="checkoutShipping" class="text-neutral-900 font-bold">0 ₺</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-6 pt-6 border-t border-neutral-200">
+                            <span class="text-xl font-black text-neutral-900">Toplam</span>
+                            <span id="checkoutTotal" class="text-4xl font-black text-emerald-800">0 ₺</span>
+                        </div>
+
+                        <button onclick="confirmOrder(event)" class="w-full mt-10 bg-emerald-800 text-white py-6 rounded-[2rem] font-bold text-lg shadow-xl shadow-emerald-900/10 hover:bg-emerald-900 transition flex items-center justify-center gap-x-3">
+                            <i class="fa-solid fa-lock"></i> Siparişi Onayla ve Öde
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-neutral-900 text-white py-20 mt-auto">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-y-10 border-b border-white/5 pb-16">
+            <div class="flex items-center gap-x-3">
+                <div class="w-8 h-8 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-2xl font-bold logo-font">L</div>
+                <span class="logo-font text-3xl">lumina</span>
+            </div>
+            <div class="flex gap-x-12 text-sm font-bold uppercase tracking-widest text-neutral-400">
+                <a onclick="navigate('shop')" class="hover:text-emerald-500 cursor-pointer transition">Ürünler</a>
+                <a onclick="navigate('about')" class="hover:text-emerald-500 cursor-pointer transition">Hikayemiz</a>
+                <a class="hover:text-emerald-500 cursor-pointer transition">İletişim</a>
+            </div>
+        </div>
+        <p class="text-center mt-10 text-neutral-600 text-xs tracking-widest font-bold uppercase italic">© 2026 Lumina Skin • Pure Nature, Pure Science.</p>
+    </div>
+</footer>
+
+<!-- MODALLAR -->
+<div id="authModal" onclick="toggleAuthModal()" class="hidden fixed inset-0 bg-black/80 z-[1001] flex items-center justify-center p-4 backdrop-blur-sm">
+    <div onclick="event.stopPropagation()" class="modal bg-white max-w-md w-full rounded-[2.5rem] overflow-hidden p-12 text-center shadow-2xl">
+        <div id="loginView">
+            <h2 class="text-3xl font-bold tracking-tighter mb-2 text-neutral-900">Hoş Geldiniz</h2>
+            <p class="text-neutral-500 mb-10 text-sm font-medium">Hesabınıza giriş yaparak size özel fırsatları keşfedin.</p>
+            <input id="authName" type="text" placeholder="İsminiz" class="w-full border border-neutral-200 bg-neutral-50 rounded-2xl px-6 py-4 mb-6 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 font-bold text-neutral-900">
+            <button onclick="handleLogin()" class="w-full bg-emerald-800 text-white py-5 rounded-[2rem] font-bold shadow-lg shadow-emerald-900/10 hover:bg-emerald-900 transition">Devam Et</button>
+        </div>
+        <div id="profileView" class="hidden">
+            <div class="w-24 h-24 bg-emerald-50 text-emerald-800 rounded-full flex items-center justify-center text-4xl font-bold mx-auto mb-6 border border-emerald-100" id="profileInitial">L</div>
+            <h2 id="profileName" class="text-3xl font-bold mb-2 tracking-tighter text-neutral-900"></h2>
+            <p class="text-emerald-600 text-xs font-black uppercase tracking-widest mb-10">Premium Üye</p>
+            <div class="space-y-4 text-left">
+                <div class="p-5 border border-neutral-100 rounded-2xl flex items-center gap-x-4 cursor-pointer hover:bg-neutral-50 transition shadow-sm">
+                    <i class="fa-solid fa-box text-emerald-600 text-lg"></i>
+                    <span class="text-sm font-bold text-neutral-800">Siparişlerim</span>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="w-full mt-12 text-red-500 font-bold py-4 rounded-[2rem] border border-red-50 hover:bg-red-50 transition uppercase text-xs tracking-widest">Çıkış Yap</button>
+        </div>
+    </div>
+</div>
+
+<div id="cartModal" onclick="if(event.target.id==='cartModal')toggleCart()" class="hidden fixed inset-0 bg-black/80 z-[1000] flex items-end md:items-center justify-center backdrop-blur-sm p-4 md:p-0">
+    <div onclick="event.stopImmediatePropagation()" class="bg-white w-full max-w-md rounded-3xl md:rounded-[2.5rem] max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+        <div class="p-8 border-b border-neutral-100 flex justify-between items-center">
+            <h3 class="text-2xl font-bold tracking-tighter text-neutral-900">Sepetim</h3>
+            <button onclick="toggleCart()" class="text-4xl leading-none text-neutral-400 hover:text-neutral-900 transition">&times;</button>
+        </div>
+        <div id="cartItems" class="p-8 overflow-y-auto flex-1 min-h-[300px]"></div>
+        <div class="p-8 border-t border-neutral-100 bg-neutral-50/50">
+            <div class="flex justify-between text-2xl font-black mb-8 text-neutral-900"><span>Toplam</span><span id="cartTotal">0 ₺</span></div>
+            <button onclick="checkout()" class="w-full bg-emerald-800 text-white py-6 rounded-[2rem] font-bold shadow-lg shadow-emerald-900/10 hover:bg-emerald-900 transition">Ödemeye Geç</button>
+        </div>
+    </div>
+</div>
+
+<div id="productModal" onclick="closeProductModal()" class="hidden fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-4 backdrop-blur-sm">
+    <div onclick="event.stopPropagation()" class="modal bg-white max-w-5xl w-full rounded-[3rem] overflow-hidden max-h-[95vh] flex flex-col md:flex-row shadow-2xl">
+        <div class="md:w-1/2 bg-neutral-50 flex items-center justify-center overflow-hidden">
+            <img id="modalImage" class="w-full h-full object-cover" alt="Ürün Görseli">
+        </div>
+        <div class="md:w-1/2 p-10 md:p-14 overflow-auto flex flex-col">
+            <button onclick="closeProductModal()" class="self-end text-5xl text-neutral-300 hover:text-neutral-900 leading-none transition">&times;</button>
+            <div class="mt-4">
+                <span id="modalCategory" class="text-emerald-700 font-black uppercase text-[10px] tracking-[0.3em] bg-emerald-50 px-3 py-1 rounded-full"></span>
+                <h2 id="modalName" class="text-4xl md:text-5xl font-bold mt-6 leading-none tracking-tighter text-neutral-900"></h2>
+                <div id="modalPrice" class="text-4xl font-black mt-8 text-neutral-900"></div>
+                <div class="h-px bg-neutral-200 my-10 w-20"></div>
+                <p id="modalDesc" class="text-neutral-500 leading-relaxed text-lg font-medium"></p>
+            </div>
+            <div class="mt-auto pt-10">
+                <button onclick="addCurrentProductToCart()" class="w-full bg-emerald-800 text-white py-6 rounded-[2rem] font-bold text-xl shadow-xl shadow-emerald-900/20 hover:bg-emerald-900 transition flex items-center justify-center gap-x-3">
+                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Yepyeni, Kesin Çalışan ve Çakışmayan SVG Yer Tutucu (Syntax hatası %22 ile düzeltildi)
+    const fallbackSVG = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 500%22%3E%3Crect width=%22400%22 height=%22500%22 fill=%22%23f3f4f6%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-family=%22sans-serif%22 font-size=%2220%22 font-weight=%22600%22%3ELumina Skin%3C/text%3E%3C/svg%3E";
+
+    // Titizlikle seçilmiş, kedisiz, köpeksiz tam 25 adet GARANTİLİ kozmetik fotoğrafı (0 kopya)
+    const validImages = [
+        "1620916566398-39f1143ab7be", "1556229010-6c3f2c9ca5f8", "1612817288484-6f916006741a", 
+        "1556228453-efd6c1ff04f9", "1601049541289-9b1b7bbbfe19", "1598440947619-2c35fc9aa908", 
+        "1608248593859-994f275e01b3", "1570194065650-d99fb4b8ceb0", "1564277287253-934c868e54ea", 
+        "1526413232644-8a40f4110391", "1617897903246-7192421e3f5c", "1584305574343-4dc975baad24", 
+        "1629198688000-71f23e745b6e", "1599305090598-fe179d501227", "1556228578-0d85b1a4d571", 
+        "1596755094514-f87e34085b2c", "1571781926291-c477eb31f76e", "1614859324922-069192404e9c", 
+        "1599733594230-6b823276abcc", "1608226081079-24263013d5cd", "1555820598-08fc6e51be95", 
+        "1616683693504-3ea7e9ad6fec", "1608248543803-bdaa4a5a5e1d", "1611080501637-296130c8bc3a", 
+        "1556228720-192b61c94c96"
+    ];
+
+    const categories = ["Serum", "Krem", "Maske", "Temizleyici", "Tonik", "Güneş Kremi", "Göz Kremi", "Peeling"];
+    const prefixes = ["Aydınlatıcı", "Canlandırıcı", "Yatıştırıcı", "Sıkılaştırıcı", "Arındırıcı", "Besleyici", "Onarıcı", "Gözenek Sıkılaştırıcı", "Leke Giderici", "Yoğun Nem"];
+    
+    let products = [];
+    
+    for(let i = 0; i < 50; i++) {
+        const cat = categories[i % categories.length];
+        const adj = prefixes[(i * 3) % prefixes.length];
+        const imageId = validImages[i % 25]; 
+
+        products.push({
+            id: i + 1,
+            name: `${adj} ${cat}`,
+            price: Math.floor(Math.random() * (450 - 150 + 1)) + 150,
+            image: `https://images.unsplash.com/photo-${imageId}?auto=format&fit=crop&q=80&w=800`,
+            category: cat,
+            desc: `Cildinizin doğal dengesini koruyan, günlük bakıma uygun profesyonel ${cat.toLowerCase()} formülü. Dermatolojik olarak test edilmiştir.`
+        });
+    }
+
+    products[0].name = "Glow Serum"; products[0].category = "Serum";
+    products[1].name = "Nem Bombası Krem"; products[1].category = "Krem";
+    products[2].name = "Gece Onarıcı Maske"; products[2].category = "Maske";
+    products[3].name = "Yenileyici Vücut Losyonu"; products[3].category = "Krem";
+
+    let cart = JSON.parse(localStorage.getItem('luminaCart')) || [];
+    let currentUser = localStorage.getItem('luminaUser') || null;
+    let currentProduct = null;
+
+    function navigate(pageId) {
+        document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+        const targetPage = document.getElementById('page-' + pageId);
+        if (targetPage) targetPage.classList.remove('hidden');
+        window.scrollTo({top:0, behavior:'smooth'});
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) mobileMenu.classList.add('hidden');
+    }
+
+    function checkAuthState() {
+        if(currentUser) updateUI(currentUser);
+        else updateUI(null);
+    }
+    
+    function handleLogin() {
+        const n = document.getElementById('authName').value;
+        if(!n) return;
+        localStorage.setItem('luminaUser', n);
+        currentUser = n;
+        updateUI(n);
+        toggleAuthModal();
+        showToast("Hoş geldiniz!");
+    }
+    
+    function handleLogout() {
+        localStorage.removeItem('luminaUser');
+        currentUser = null;
+        updateUI(null);
+        toggleAuthModal();
+    }
+    
+    function updateUI(n) {
+        document.getElementById('userNameDisplay').textContent = n || "Giriş Yap";
+        document.getElementById('loginView').classList.toggle('hidden', !!n);
+        document.getElementById('profileView').classList.toggle('hidden', !n);
+        if(n) {
+            document.getElementById('profileName').textContent = n;
+            document.getElementById('profileInitial').textContent = n[0].toUpperCase();
+        }
+    }
+    
+    function toggleAuthModal() { document.getElementById('authModal').classList.toggle('hidden'); }
+    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+
+    function getProductCardHTML(p) {
+        return `
+            <div class="product-card bg-white rounded-[2.5rem] border border-neutral-100 cursor-pointer flex flex-col h-full shadow-sm" onclick="openProductModal(${p.id})">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-t-[2.5rem] bg-neutral-100 flex-shrink-0">
+                    <img src="${p.image}" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='${fallbackSVG}'">
+                    <span class="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-emerald-800 shadow-sm">${p.category}</span>
+                </div>
+                <div class="p-6 md:p-8 flex flex-col flex-1">
+                    <h3 class="font-bold text-lg mb-2 text-neutral-900 line-clamp-1" title="${p.name}">${p.name}</h3>
+                    <p class="text-neutral-500 text-xs font-medium line-clamp-2 mb-6 min-h-[2rem] leading-relaxed">${p.desc}</p>
+                    <div class="flex justify-between items-center mt-auto pt-4 border-t border-neutral-100/60">
+                        <span class="text-2xl font-black text-neutral-900">${p.price} ₺</span>
+                        <button onclick="event.stopPropagation(); addToCartData(${p.id})" class="w-10 h-10 flex-shrink-0 bg-neutral-900 text-white rounded-xl flex items-center justify-center hover:bg-emerald-700 transition shadow-md">
+                            <i class="fa-solid fa-plus text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderProducts(list) {
+        const grid = document.getElementById('productGrid');
+        const empty = document.getElementById('noProductsMessage');
+        const countBadge = document.getElementById('productCountBadge');
+        if (countBadge) countBadge.textContent = list.length;
+        if (!grid) return;
+        
+        grid.innerHTML = '';
+        if(list.length === 0) { 
+            if (empty) empty.classList.remove('hidden'); 
+            return; 
+        }
+        if (empty) empty.classList.add('hidden');
+        list.forEach(p => { grid.innerHTML += getProductCardHTML(p); });
+    }
+
+    function renderFeaturedProducts() {
+        const featuredGrid = document.getElementById('featuredGrid');
+        if (!featuredGrid) return;
+        const featuredList = products.slice(0, 4);
+        featuredGrid.innerHTML = '';
+        featuredList.forEach(p => { featuredGrid.innerHTML += getProductCardHTML(p); });
+    }
+
+    function populateCategories() {
+        const s = document.getElementById('categoryFilter');
+        if (!s) return;
+        s.innerHTML = '<option value="">Tüm Kategoriler</option>';
+        [...new Set(categories)].sort().forEach(c => s.innerHTML += `<option value="${c}">${c}</option>`);
+    }
+
+    function filterProducts() {
+        const c = document.getElementById('categoryFilter').value;
+        const t = document.getElementById('searchInput').value.toLowerCase();
+        let f = products;
+        if(c) f = f.filter(p => p.category === c);
+        if(t) f = f.filter(p => p.name.toLowerCase().includes(t));
+        renderProducts(f);
+    }
+
+    function openProductModal(id) {
+        currentProduct = products.find(p => p.id === id);
+        if (!currentProduct) return;
+        const modalImg = document.getElementById('modalImage');
+        modalImg.onerror = function() { this.src = fallbackSVG; };
+        modalImg.src = currentProduct.image;
+        
+        document.getElementById('modalName').textContent = currentProduct.name;
+        document.getElementById('modalCategory').textContent = currentProduct.category;
+        document.getElementById('modalPrice').textContent = currentProduct.price + " ₺";
+        document.getElementById('modalDesc').textContent = currentProduct.desc;
+        document.getElementById('productModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeProductModal() {
+        document.getElementById('productModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    function addToCartData(id) {
+        const p = products.find(i => i.id === id);
+        if (!p) return;
+        const ex = cart.find(i => i.id === id);
+        if(ex) ex.quantity++;
+        else cart.push({...p, quantity: 1});
+        saveCart();
+        showToast(p.name + " sepete eklendi.");
+    }
+    
+    function saveCart() {
+        localStorage.setItem('luminaCart', JSON.stringify(cart));
+        updateCartCount();
+        renderCart();
+    }
+    
+    function updateCartCount() {
+        const badge = document.getElementById('cartCount');
+        if (badge) badge.textContent = cart.reduce((a, b) => a + b.quantity, 0);
+    }
+    
+    function toggleCart() {
+        const modal = document.getElementById('cartModal');
+        if (modal) modal.classList.toggle('hidden');
+        renderCart();
+    }
+    
+    function renderCart() {
+        const c = document.getElementById('cartItems');
+        if (!c) return;
+        let total = 0;
+        c.innerHTML = cart.length ? '' : '<div class="text-center py-12"><i class="fa-solid fa-cart-flatbed text-6xl text-neutral-200 mb-4"></i><p class="text-neutral-400 text-xs font-black uppercase tracking-widest">Henüz bir ürün yok</p></div>';
+        cart.forEach((i, idx) => {
+            total += i.price * i.quantity;
+            c.innerHTML += `
+                <div class="flex items-center gap-6 border-b border-neutral-100 pb-6 mb-6">
+                    <img src="${i.image}" onerror="this.src='${fallbackSVG}'" class="w-20 h-20 object-cover rounded-2xl shadow-sm border border-neutral-100">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm text-neutral-900">${i.name}</h4>
+                        <p class="text-xs font-black text-emerald-700 mt-1">${i.quantity} x ${i.price} ₺</p>
+                    </div>
+                    <button onclick="removeFromCart(${idx})" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition">
+                        <i class="fa-solid fa-trash-can text-[10px]"></i>
+                    </button>
+                </div>`;
+        });
+        const totalDisplay = document.getElementById('cartTotal');
+        if (totalDisplay) totalDisplay.textContent = total + " ₺";
+    }
+    
+    function removeFromCart(idx) { cart.splice(idx,1); saveCart(); }
+    function addCurrentProductToCart() { if (currentProduct) addToCartData(currentProduct.id); closeProductModal(); }
+
+    function checkout() { 
+        if(!cart.length) return;
+        toggleCart();
+        navigate('checkout'); 
+        renderCheckoutSummary(); 
+    }
+
+    function renderCheckoutSummary() {
+        const container = document.getElementById('checkoutItems');
+        if (!container) return;
+        
+        let total = 0;
+        container.innerHTML = '';
+        
+        cart.forEach(i => {
+            total += i.price * i.quantity;
+            container.innerHTML += `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <img src="${i.image}" onerror="this.src='${fallbackSVG}'" class="w-16 h-16 object-cover rounded-xl shadow-sm border border-neutral-100">
+                            <span class="absolute -top-2 -right-2 bg-neutral-900 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm">${i.quantity}</span>
+                        </div>
+                        <span class="font-bold text-sm text-neutral-800 line-clamp-1 max-w-[120px] md:max-w-[160px]">${i.name}</span>
+                    </div>
+                    <span class="font-bold text-neutral-900">${i.price * i.quantity} ₺</span>
+                </div>
+            `;
+        });
+        
+        document.getElementById('checkoutSubtotal').textContent = total + " ₺";
+        
+        const shippingCost = total > 150 ? 0 : 49; 
+        document.getElementById('checkoutShipping').textContent = shippingCost === 0 ? "Ücretsiz" : shippingCost + " ₺";
+        
+        const finalTotal = total + shippingCost;
+        document.getElementById('checkoutTotal').textContent = finalTotal + " ₺";
+    }
+
+    function confirmOrder(event) {
+        if(event) event.preventDefault(); 
+        
+        showToast("Siparişiniz başarıyla alındı!");
+        
+        cart = []; 
+        saveCart(); 
+        setTimeout(() => { navigate('home'); }, 1500);
+    }
+
+    function showToast(m) {
+        const t = document.createElement('div');
+        t.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-neutral-900 text-white px-8 py-4 rounded-[2rem] z-[3000] shadow-2xl flex items-center gap-3 animate-[modalPop_0.3s_ease] border border-white/10';
+        t.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span class="text-xs font-bold uppercase tracking-widest">${m}</span>`;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
+    }
+
+    window.onload = () => {
+        populateCategories();
+        renderProducts(products);
+        renderFeaturedProducts();
+        updateCartCount();
+        checkAuthState();
+    };
+</script>
+</body>
+</html>
